@@ -17,11 +17,10 @@ const ProductScrenn = () => {
   const { loading, error, product } = productDetails;
 
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     dispatch(listProductDetails(params._id))
-  }, [dispatch, params])
-
+  }, [dispatch, params , qty])
   const addToCartHandler = () => {
     navigate(`/cart/${params._id}?qty${qty}`, { state: { qty } })
   }
@@ -87,7 +86,7 @@ const ProductScrenn = () => {
 
                     {
                       product.countInStock > 0 && (
-                        <ListGroup.Item>
+                        <ListGroup.Item >
                           <Row>
                             <Col>Qty</Col>
                             <Col xs="auto" className='my-1'>
@@ -112,7 +111,7 @@ const ProductScrenn = () => {
                     }
 
                     <ListGroup.Item>
-                      <Button onClick={addToCartHandler} className='btn-block' disabled={product.countInStock == 0} type='button'>Add To Cart</Button>
+                      <Button onClick={addToCartHandler} className='btn-block' disabled={product.countInStock ==0} type='button'>Add To Cart</Button>
                     </ListGroup.Item>
 
                   </ListGroup>

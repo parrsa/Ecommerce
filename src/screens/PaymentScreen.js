@@ -14,7 +14,7 @@ export const PaymentScreen = () => {
     const { shippingAddress } = cart;
 
 
-    const [paymentMethod, setPaymentMethod] = useState('PayPal')
+    const [paymentMethod, setPaymentMethod] = useState('paypal')
 
     if (!shippingAddress?.address) {
         navigate('shipping')
@@ -24,6 +24,7 @@ export const PaymentScreen = () => {
         e.preventDefault();
         dispatch(savePaymentMethod(paymentMethod))
         navigate('/placeorder')
+        
     };
 
     return (
@@ -42,8 +43,10 @@ export const PaymentScreen = () => {
                             onChange={(e)=>setPaymentMethod(e.target.value)}
                         ></Form.Check>
                     </Col>
-                    
+               
                 </Form.Group>
+
+                
                 <Button type="submit" variant="primary">
                     Countinue
                 </Button>

@@ -11,6 +11,7 @@ import ProfileScrenn from './screens/ProfileScrenn';
 import ShippingScrenn from './screens/ShippingScrenn';
 import { PaymentScreen } from './screens/PaymentScreen';
 import { PlaceOrderScreen } from './screens/PlaceOrderScreen';
+import { OrderScreen } from './screens/OrderScreen';
 function App() {
   return (
     <div>
@@ -26,6 +27,7 @@ function App() {
             <Route path='/shipping' element={<ShippingScrenn />} />
             <Route path='/payment' element={<PaymentScreen />} />
             <Route path='/placeorder' element={<PlaceOrderScreen />} />
+            <Route path='/order/:id' element={<OrderScreen />} />
             <Route path='/profile' element={<ProfileScrenn />} />
             <Route path='/product/:_id' element={<PeroductDetils />} />
             <Route path='/cart/:id?' element={<CartScreen />} />
