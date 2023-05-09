@@ -40,11 +40,10 @@ const ProfileScrenn = () => {
         if (!userInfo) {
             navigate('/login');
         } else {
-            if (!user || !user.name || success) {
+            if (!user || !user.name || success || userInfo._id !== user._id) {
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
                 dispatch(getUserDetails('profile'))
                 dispatch(listMyOrders())
-
             } else {
                 setName(user.name)
                 setEmail(user.email)

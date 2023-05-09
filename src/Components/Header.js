@@ -9,11 +9,13 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { logout } from '../actions/userAction';
+import SearchBox from './SearchBox';
 const Header = () => {
-  
+
   const userLogin = useSelector(state => state.userLogin)
   const { userInfo } = userLogin;
   const dispatch = useDispatch();
+  
   const logoutHandler = () => {
     dispatch(logout(userInfo))
   }
@@ -30,6 +32,7 @@ const Header = () => {
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
+            <SearchBox/>
             <Nav className='mr-auto'>
 
               <LinkContainer to='/Cart'>
@@ -54,6 +57,24 @@ const Header = () => {
                   </LinkContainer>
 
                 )}
+
+
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title='Admin' id="adminname">
+                  <LinkContainer to='/admin/userlist'>
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='/admin/productlist'>
+                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='/admin/orderlist'>
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer>
+
+                </NavDropdown>
+              )}
 
 
             </Nav>

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Row, Col, Form, ListGroup, Image, Card } from "react-bootstrap";
 import { useNavigate, Link, useParams } from "react-router-dom";
-import { getOrderDetails } from "../actions/orderAction";
+import { getOrderDetails, deliverOrder } from "../actions/orderAction";
 import Message from "../Components/Message";
 import Loader from '../Components/Loader'
+import { ORDER_DELIVER_RESET } from "../constants/orderConstants";
 
 export const OrderScreen = () => {
     const params = useParams();
@@ -16,6 +17,9 @@ export const OrderScreen = () => {
     const orderDetails = useSelector(state => state.orderDetails)
     const { order, error, loading } = orderDetails;
 
+    const orderDeliver = useSelector(state => state.orderDeliver)
+    const { loading: loadingDeliver, success: successDeliver } = orderDeliver
+
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin;
 
@@ -25,12 +29,21 @@ export const OrderScreen = () => {
 
 
     useEffect(() => {
-        if (!order || order._id !== Number(params.id))
+
+        if (!userInfo) {
+            navigate('/login')
+        }
+
+
+        if (!order || order._id !== Number(params.id) || successDeliver) {
+            dispatch({ type: ORDER_DELIVER_RESET })
             dispatch(getOrderDetails(params.id))
+        }
+    }, [order, params, dispatch, successDeliver])
 
-    }, [order, params])
-
-
+    const deliverHandler = () => {
+        dispatch(deliverOrder(order))
+    }
     return loading ? (
         <Loader />
     ) : error ? (
@@ -56,7 +69,7 @@ export const OrderScreen = () => {
 
                             {order.isDelivered ? (
                                 <Message variant='success'>Delivered on {order.deliveredAt}</Message>
-                            ):(
+                            ) : (
                                 <Message variant='warning'>Not Delivered</Message>
                             )}
                         </ListGroup.Item>
@@ -70,7 +83,7 @@ export const OrderScreen = () => {
                             </p>
                             {order.isPaid ? (
                                 <Message variant='success'>Paid on {order.paidAt}</Message>
-                            ):(
+                            ) : (
                                 <Message variant='warning'>Not Paid</Message>
                             )}
                         </ListGroup.Item>
@@ -157,6 +170,19 @@ export const OrderScreen = () => {
                             </ListGroup.Item>
 
                         </ListGroup>
+
+                        {loadingDeliver && <Loader />}
+                        {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                            <ListGroup.Item>
+                                <Button
+                                    type='button'
+                                    className='btn btn-block'
+                                    onClick={deliverHandler}
+                                >
+                                    Mark As Delivered
+                                </Button>
+                            </ListGroup.Item>
+                        )}
                     </Card>
                 </Col>
             </Row>
