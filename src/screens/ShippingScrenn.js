@@ -27,11 +27,12 @@ function ShippingScreen() {
   return (
     <FormContainer>
       <CheckoutSteps step1 step2 />
-      <h1>Shipping</h1>
+      <h1>آدرس</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="address">
-          <Form.Label>Address</Form.Label>
+          <Form.Label>آدرس را وارد کنید</Form.Label>
           <Form.Control
+          className="rounded"
             required
             type="text"
             placeholder="Enter address"
@@ -41,8 +42,9 @@ function ShippingScreen() {
         </Form.Group>
 
         <Form.Group controlId="city">
-          <Form.Label>City</Form.Label>
+          <Form.Label>شهر خود را وارد کنید</Form.Label>
           <Form.Control
+          className="rounded"
             required
             type="text"
             placeholder="Enter city"
@@ -52,8 +54,9 @@ function ShippingScreen() {
         </Form.Group>
 
         <Form.Group controlId="postalCode">
-          <Form.Label>Postal Code</Form.Label>
+          <Form.Label>کدپستی</Form.Label>
           <Form.Control
+          className="rounded"
             required
             type="text"
             placeholder="Enter postal code"
@@ -63,8 +66,9 @@ function ShippingScreen() {
         </Form.Group>
 
         <Form.Group controlId="country">
-          <Form.Label>Country</Form.Label>
+          <Form.Label>کشور</Form.Label>
           <Form.Control
+          className="rounded"
             required
             type="text"
             placeholder="Enter country"
@@ -73,8 +77,8 @@ function ShippingScreen() {
           />
         </Form.Group>
 
-        <Button type="submit" variant="primary">
-          Continue
+        <Button className="submit-shipping rounded" type="submit" variant="primary">
+          ثبت
         </Button>
       </Form>
     </FormContainer>

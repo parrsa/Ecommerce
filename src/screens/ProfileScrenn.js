@@ -21,6 +21,7 @@ const ProfileScrenn = () => {
     const dispatch = useDispatch();
 
 
+
     const userDetails = useSelector(state => state.userDetails)
     const { error, loading, user } = userDetails;
 
@@ -67,45 +68,76 @@ const ProfileScrenn = () => {
     }
 
 
+    const separated = (Number) => {
+
+        if (Number !== undefined) {
+          // return Number_sring;
+          const Number_sring = Number.toString();
+          let fraction = ''
+          if (Number_sring.split('.').length > 1) {
+            fraction = "/" + Number_sring.split('.')[1]
+          } else {
+          }
+          Number = Number_sring.split('.')[0]
+          const n = Number_sring.length;
+          let output = ''
+          Number = Number_sring.split('').reverse().join('')
+          for (let index = 1; index < n + 1; index++) {
+            let temp = Number.charAt(index - 1)
+            if (index % 3 === 0 && index !== n) {
+              output = output + temp + ','
+            } else {
+              output = output + temp
+            }
+          }
+          return output.split('').reverse().join('') + fraction;
+    
+        } else {
+          return Number;
+        }
+      }
+    
+
+
 
     return (
         <Row>
             <Col md={3}>
-                <h2>User Profile</h2>
+                <h2>پروفایل</h2>
                 {message && <Message variant='danger'>{message}</Message>}
                 {error && <Message variant='danger'>{error}</Message>}
                 {loading && <Loader />}
                 <Form onSubmit={submitHandler}>
 
                     <Form.Group controlId='name'>
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control required type='name' placeholder='Enter name' value={name} onChange={(e) => setName(e.target.value)} ></Form.Control>
+                        <Form.Label>نام</Form.Label>
+                        <Form.Control required type='name' placeholder='نام را وارد کنید' value={name} onChange={(e) => setName(e.target.value)} ></Form.Control>
                     </Form.Group>
 
                     <Form.Group controlId='email'>
-                        <Form.Label>Email Address</Form.Label>
-                        <Form.Control required type='email' placeholder='Enter Email' value={email} onChange={(e) => setEmail(e.target.value)} ></Form.Control>
+                        <Form.Label>ایمیل</Form.Label>
+                        <Form.Control required type='email' placeholder='ایمیل را وارد کنید' value={email} onChange={(e) => setEmail(e.target.value)} ></Form.Control>
                     </Form.Group>
 
                     <Form.Group controlId='password'>
-                        <Form.Label>password</Form.Label>
-                        <Form.Control type='password' placeholder='Enter password' value={password} onChange={(e) => setPassword(e.target.value)} ></Form.Control>
+                        <Form.Label>پسورد</Form.Label>
+                        <Form.Control type='password' placeholder='پسور را وارد کنید' value={password} onChange={(e) => setPassword(e.target.value)} ></Form.Control>
                     </Form.Group>
 
 
                     <Form.Group controlId='passwordConfirm'>
                         <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control type='password' placeholder='Enter password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} ></Form.Control>
+                        <Form.Control type='password' placeholder='تایید رمز عبور' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} ></Form.Control>
                     </Form.Group>
 
 
-                    <Button type='submit' variant='primary'>Update</Button>
+                    <Button className="submit-edit-profile" type='submit' variant='primary'>ویرایش</Button>
 
                 </Form>
             </Col>
 
             <Col md={9}>
-                <h2>My Orders</h2>
+                <h2>لیست سفارشات</h2>
                 {loadingOrders ? (
                     <Loader />
                 ) : errorOrders ? (
@@ -115,10 +147,10 @@ const ProfileScrenn = () => {
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Date</th>
-                                <th>Total</th>
-                                <th>Paid</th>
-                                <th>Delivered</th>
+                                <th>تاریخ</th>
+                                <th>جمع کل</th>
+                                <th>پرداخت شده</th>
+                                <th>ارسال شده</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -128,10 +160,11 @@ const ProfileScrenn = () => {
                                 <tr>
                                     <td>{order._id}</td>
                                     <td>{order.createdAt.substring(0, 10)}</td>
-                                    <td>${order.totalPrice}</td>
+                                    <td>
+                                    {` ${separated(order.totalPrice)} تومان`}</td>
                                     <td>{order.isPaid ? order.paidAt.substring(0, 10) : (<i className="fas fa-times" style={{ color: 'red' }}></i>)}</td>
                                     <td><LinkContainer to={`/order/${order._id}`}>
-                                        <Button className="btn-sm">Details</Button>
+                                        <Button className="btn-sm rounded">جزئیات</Button>
                                     </LinkContainer></td>
                                 </tr>
                             ))}

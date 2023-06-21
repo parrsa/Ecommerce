@@ -1,21 +1,395 @@
-main{
+main {
     min-height: 80vh;
 }
 
-.rating span{
-margin: 0.1rem;
+
+
+@font-face {
+    font-family: MyFont;
+    src: url('../public/Font/Samim-Bold.ttf');
 }
 
-h3{
+* {
+    
+    font-family: MyFont;
+}
+
+* {
+    scrollbar-width: 2px;
+    scrollbar-color: white;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #ffffff;
+    border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #a2a2a5;
+    border-radius: 10px;
+    /* border: 1px solid white ; */
+}
+
+
+.rating span {
+    margin: 0.1rem;
+}
+
+h3 {
     padding: 1rem 0;
 }
 
-h1{
+h1 {
     font-size: 1.8rem;
     padding: 1rem 0;
 }
 
-h2{
+h2 {
     font-size: 1.4rem;
     padding: 0.5rem 0;
+}
+
+
+.card-shop {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+
+.product-details-div-price-and-name {
+    position: relative;
+    left: 10px;
+    bottom: 15px;
+    padding: 10px;
+}
+
+.product-details-div-price-and-name .h3 {
+    padding: 0;
+}
+
+
+.card-shop-total {
+    position: relative;
+    top: 75px;
+    padding: 10px;
+}
+
+
+.check-submit div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+
+.check-submit button {
+    width: 250px;
+    margin-top: 10px;
+    /* border-radius: 0.5rem; */
+}
+
+.button-register {
+    margin-top: 20px;
+    border-radius: 0.50rem;
+}
+
+.button-login {
+    margin-top: 20px;
+    border-radius: 0.50rem;
+}
+
+.submit-add-to-cart button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+
+.card-price-in-product-detils {
+    position: relative;
+    top: -8px;
+    /* padding: 10px; */
+}
+
+.margin-top {
+    margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+    #box-review {
+        margin-top: 20px;
+        margin-right: -5px;
+        color: red;
+    }
+
+    #box-description {
+        margin-top: 20px;
+        margin-right: -8px;
+    }
+
+    #logo {
+        margin-right: 100px;
+        height: 30px;
+    }
+
+    #custom-text-justify {
+        text-align: justify;
+        width: 100%;
+    }
+
+    #button-cat-login {
+        width: 350px;
+        margin-top: 5px;
+        /* background-color: red; */
+        /* display: flex; */
+        /* justify-content: center; */
+        /* align-items: center; */
+        /* padding: 2px; */
+    }
+
+    .box-sub {
+        margin-top: 20px;
+    }
+
+    .button-cat-login {
+        width: 550px;
+        /* background-color: red; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2px;
+        margin-left: 18px;
+    }
+}
+
+.input-div {
+    width: 350px;
+    height: 2.5rem;
+    position: relative;
+}
+
+
+.ch {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.p {
+    background: rgba(255, 255, 255, 0.37);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 1);
+    color: black;
+    position: relative;
+
+}
+
+.button-cat-login {
+    width: 550px;
+    /* background-color: red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+    margin-left: -35px;
+}
+
+.btn-login {
+    background-color: white;
+    color: black;
+}
+
+.btn-cart {
+    background-color: white;
+    color: black;
+    margin-left: 10px;
+}
+
+.input {
+    width: 100%;
+    position: absolute;
+    background-color: transparent;
+    height: 100%;
+    outline: none;
+    /* border: none; */
+    /* border-bottom: 1px solid black; */
+    border-radius: 0.5rem;
+    padding-right: 5px;
+}
+
+
+.in i {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 100;
+    font-size: 18px;
+}
+
+
+
+.box-review {
+    margin-top: 20px;
+    margin-right: -20px;
+}
+
+.box-description {
+    margin-top: 20px;
+    margin-right: -20px;
+}
+
+.submit-shipping {
+    width: 120px;
+    margin-top: 15px;
+}
+
+.submit-payment {
+    width: 120px;
+    margin-top: 15px;
+}
+
+.submit-rating {
+    width: 120px;
+    margin-top: 15px;
+}
+
+.submit-place-order button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+
+.login-signin-button {
+    width: 100%;
+    display: flex;
+    justify-items: center;
+}
+
+
+.submit-delivered button {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.create-product {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    justify-items: center;
+    border-radius: 10px;
+}
+
+.submit-edit-profile {
+    width: 120px;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+.update-user-button {
+    width: 120px;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+.update-product-button {
+    width: 120px;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+
+
+.custom-text-justify {
+    text-align: justify;
+    width: 88%;
+}
+
+
+.p-rating {
+    display: flex;
+    justify-content: space-between;
+}
+
+.icon-rating {
+    font-size: 12px;
+}
+
+.number-rating {
+    color: black;
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+.rating span {
+    margin: 0.1rem;
+}
+
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item.active {
+    /* display: flex; */
+    height: 535px;
+}
+
+.carousel-box {
+    
+    margin-top: 15px;
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 0;
+}
+
+.carousel-caption h4 {
+    color: #fff;
+}
+
+
+.carousel img {
+    display: block;
+    height: 535px;
+}
+
+.carousel a {
+    margin: 0 auto;
+}
+
+/* .box-sub {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+} */
+
+@media (max-width: 900px) {
+    .carousel-caption h2 {
+        font-size: 2.5vw;
+    }
+
+    .carousel-item-next,
+    .carousel-item-prev,
+    .carousel-item.active {
+        height: 300px;
+    }
+
+    .carousel img {
+
+        height: 300px;
+    }
 }

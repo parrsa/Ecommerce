@@ -40,7 +40,7 @@ const UserListScreen = () => {
 
     return (
         <div>
-            <h1>Users</h1>
+            <h1>لیست کاربران</h1>
             {loading ? (<Loader />)
                 : error ? (<Message variant='danger'>{error}</Message>)
                     : (
@@ -48,9 +48,9 @@ const UserListScreen = () => {
 
                             <thead>
                                 <th>ID</th>
-                                <th>NAME</th>
-                                <th>EMAIL</th>
-                                <th>ADMIN</th>
+                                <th>نام</th>
+                                <th>ایمیل</th>
+                                <th>ادمین</th>
                                 <th></th>
                             </thead>
                             <tbody>

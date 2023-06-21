@@ -7,6 +7,7 @@ import { addToCart } from "../actions/cartAction";
 import { createOrder } from "../actions/orderAction";
 import Message from "../Components/Message";
 import { ORDER_CREATE_RESET } from '../constants/orderConstants'
+import { CART_DELETE_ITEM } from "../constants/cartConstants";
 
 
 export const PlaceOrderScreen = () => {
@@ -14,7 +15,7 @@ export const PlaceOrderScreen = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart)
-
+    console.log(cart)
     const orderCreate = useSelector(state => state.orderCreate)
     const { order, error, success } = orderCreate;
 
@@ -22,16 +23,16 @@ export const PlaceOrderScreen = () => {
     const { userInfo } = userLogin;
 
 
-    cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
+    cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(0)
 
-    cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 15).toFixed(2)
+    cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 15).toFixed(0)
 
-    cart.taxPrice = Number((0.09) * cart.itemsPrice).toFixed(2);
+    cart.taxPrice = Number((0.09) * cart.itemsPrice).toFixed(0);
 
     let Discount = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice))
-    cart.Discount = (Discount / 100 * 7).toFixed(2);
+    cart.Discount = (Discount / 100 * 7).toFixed(0);
 
-    cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice) ).toFixed(2);
+    cart.totalPrice = (Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)).toFixed(0);
 
 
     if (!cart.paymentMethod) {
@@ -46,7 +47,7 @@ export const PlaceOrderScreen = () => {
     }, [success])
 
     const placeOrder = () => {
-       dispatch(createOrder({
+        dispatch(createOrder({
             orderItems: cart.cartItems,
             shippingAddress: cart.shippingAddress,
             paymentMethod: cart.paymentMethod,
@@ -55,11 +56,42 @@ export const PlaceOrderScreen = () => {
             taxPrice: cart.taxPrice,
             totalPrice: cart.totalPrice,
         }))
-    // var win = window.open(`https://fcp.shaparak.ir/_ipgw_/payment/?token=${userInfo.token}&lang=fa`, '_blank');
-    // if (win != null) {
-    //   win.focus();
-    // }
-    
+        localStorage.removeItem('cartItems')
+        // var win = window.open(`https://fcp.shaparak.ir/_ipgw_/payment/?token=${userInfo.token}&lang=fa`, '_blank');
+        // if (win != null) {
+        //   win.focus();
+        // }
+
+    }
+
+
+    const separated = (Number) => {
+
+        if (Number !== undefined) {
+            // return Number_sring;
+            const Number_sring = Number.toString();
+            let fraction = ''
+            if (Number_sring.split('.').length > 1) {
+                fraction = "/" + Number_sring.split('.')[1]
+            } else {
+            }
+            Number = Number_sring.split('.')[0]
+            const n = Number_sring.length;
+            let output = ''
+            Number = Number_sring.split('').reverse().join('')
+            for (let index = 1; index < n + 1; index++) {
+                let temp = Number.charAt(index - 1)
+                if (index % 3 === 0 && index !== n) {
+                    output = output + temp + ','
+                } else {
+                    output = output + temp
+                }
+            }
+            return output.split('').reverse().join('') + fraction;
+
+        } else {
+            return Number;
+        }
     }
 
     return (
@@ -69,9 +101,9 @@ export const PlaceOrderScreen = () => {
                 <Col md={8}>
                     <ListGroup variant="flush">
                         <ListGroup.Item>
-                            <h2>Shipping</h2>
+                            <h2>آدرس</h2>
                             <p>
-                                <strong>Shipping :</strong>
+                                <strong>آدرس :</strong>
                                 {cart.shippingAddress.address}, {cart.shippingAddress.city}
                                 {'  '}
                                 {cart.shippingAddress.postalCode},
@@ -82,29 +114,29 @@ export const PlaceOrderScreen = () => {
 
 
                         <ListGroup.Item>
-                            <h2>Payment Method</h2>
+                            <h2>روش پرداخت</h2>
                             <p>
-                                <strong>Method :</strong>
+                                <strong>روش :</strong>
                                 {cart.paymentMethod}
                             </p>
                         </ListGroup.Item>
 
 
                         <ListGroup.Item>
-                            <h2>Order Items</h2>
+                            <h2>سفارش محصولات</h2>
 
                             {cart.cartItems.length === 0 ?
-                                <Message variant='info'>Your cart is empty</Message>
+                                <Message variant='info'>سبد خرید شما خال می باشد!</Message>
                                 : (
                                     <ListGroup variant="flush">
                                         {cart.cartItems.map((item, index) => (
                                             <ListGroup.Item key={index}>
                                                 <Row>
-                                                    <Col md={1}>
+                                                    <Col md={2}>
                                                         <Image src={item.image} alt={item.name} fluid rounded />
                                                     </Col>
 
-                                                    <Col>
+                                                    <Col className="margin-top">
                                                         <Link to={`/product/${item.product}`}>{item.name}</Link>
                                                     </Col>
 
@@ -127,8 +159,9 @@ export const PlaceOrderScreen = () => {
                                                         </Form>
                                                     </Col> */}
 
-                                                    <Col md={4}>
-                                                        {item.qty} X ${item.price} = ${(item.qty * item.price).toFixed(2)}
+                                                    <Col md={6} className="margin-top">
+                                                        {item.qty} عدد   {` ${separated(item.price)} تومان`} = {` ${separated(item.qty * item.price)} تومان`}
+
                                                     </Col>
                                                 </Row>
                                             </ListGroup.Item>
@@ -149,21 +182,25 @@ export const PlaceOrderScreen = () => {
                         <ListGroup variant="flush">
 
                             <ListGroup.Item>
-                                <h2>Order Summary</h2>
+                                <h2>صورتحساب سفارشات</h2>
                             </ListGroup.Item>
 
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>Item:</Col>
-                                    <Col>${cart.itemsPrice}</Col>
+                                    <Col>هزینه محصولات:</Col>
+                                    <Col>
+                                        {` ${separated(cart.itemsPrice)} تومان`}
+                                    </Col>
                                 </Row>
                             </ListGroup.Item>
 
 
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>Shipping:</Col>
-                                    <Col>${cart.shippingPrice}</Col>
+                                    <Col>هزینه پست:</Col>
+                                    <Col>
+                                        {` ${separated(cart.shippingPrice)} تومان`}
+                                    </Col>
                                 </Row>
                             </ListGroup.Item>
 
@@ -171,22 +208,26 @@ export const PlaceOrderScreen = () => {
 
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>Tax:</Col>
-                                    <Col>${cart.taxPrice}</Col>
+                                    <Col>مالیات:</Col>
+                                    <Col>
+                                        {` ${separated(cart.taxPrice)} تومان`}
+                                    </Col>
                                 </Row>
                             </ListGroup.Item>
 
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>DisCount:</Col>
-                                    <Col>${cart.Discount} <h6>DisCount</h6></Col>
+                                    <Col>تخفیف:</Col>
+                                    <Col>{` ${separated(cart.Discount)} تومان`} <h6>تخفیف</h6></Col>
                                 </Row>
                             </ListGroup.Item>
 
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>Total:</Col>
-                                    <Col>${cart.totalPrice}</Col>
+                                    <Col>جمع کل:</Col>
+                                    <Col>
+                                        {` ${separated(cart.totalPrice)} تومان`}
+                                    </Col>
                                 </Row>
                             </ListGroup.Item>
 
@@ -198,10 +239,12 @@ export const PlaceOrderScreen = () => {
 
 
 
-                            <ListGroup.Item>
-                                <Button type="button" className="btn-block" disabled={cart.cartItems === 0} onClick={placeOrder}>
-                                    Place Order
-                                </Button>
+                            <ListGroup.Item className="submit-place-order">
+                                <div>
+                                    <Button type="button" className="btn-block rounded" disabled={cart.cartItems === 0} onClick={placeOrder}>
+                                        ثبت نهایی
+                                    </Button>
+                                </div>
                             </ListGroup.Item>
 
                         </ListGroup>

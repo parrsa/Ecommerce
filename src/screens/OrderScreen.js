@@ -24,7 +24,7 @@ export const OrderScreen = () => {
     const { userInfo } = userLogin;
 
     if (!loading && !error) {
-        order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
+        order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     }
 
 
@@ -33,7 +33,6 @@ export const OrderScreen = () => {
         if (!userInfo) {
             navigate('/login')
         }
-
 
         if (!order || order._id !== Number(params.id) || successDeliver) {
             dispatch({ type: ORDER_DELIVER_RESET })
@@ -44,22 +43,54 @@ export const OrderScreen = () => {
     const deliverHandler = () => {
         dispatch(deliverOrder(order))
     }
+
+
+    const separated = (Number) => {
+
+        if (Number !== undefined) {
+            // return Number_sring;
+            const Number_sring = Number.toString();
+            let fraction = ''
+            if (Number_sring.split('.').length > 1) {
+                fraction = "/" + Number_sring.split('.')[1]
+            } else {
+            }
+            Number = Number_sring.split('.')[0]
+            const n = Number_sring.length;
+            let output = ''
+            Number = Number_sring.split('').reverse().join('')
+            for (let index = 1; index < n + 1; index++) {
+                let temp = Number.charAt(index - 1)
+                if (index % 3 === 0 && index !== n) {
+                    output = output + temp + ','
+                } else {
+                    output = output + temp
+                }
+            }
+            return output.split('').reverse().join('') + fraction;
+
+        } else {
+            return Number;
+        }
+    }
+
+
     return loading ? (
         <Loader />
     ) : error ? (
         <Message variant='danger'>{error}</Message>
     ) : (
         <div >
-            <h1>Order : {order._id}</h1>
+            <h1>شماره سفارش : {order._id}</h1>
             <Row>
                 <Col md={8}>
                     <ListGroup variant="flush">
                         <ListGroup.Item>
-                            <h2>Shipping</h2>
-                            <p><strong>Name : </strong> {order.user.name}</p>
-                            <p><strong>Email : </strong> <a href={`mailto:${order.user.email}`}>{order.user.email}</a></p>
+                            <h2>آدرس</h2>
+                            <p><strong>نام : </strong> {order.user.name}</p>
+                            <p><strong>ایمیل : </strong> <a href={`mailto:${order.user.email}`}>{order.user.email}</a></p>
                             <p>
-                                <strong>Shipping :</strong>
+                                <strong>آدرس :</strong>
                                 {cart.shippingAddress.address}, {cart.shippingAddress.city}
                                 {'  '}
                                 {cart.shippingAddress.postalCode},
@@ -68,29 +99,29 @@ export const OrderScreen = () => {
                             </p>
 
                             {order.isDelivered ? (
-                                <Message variant='success'>Delivered on {order.deliveredAt}</Message>
+                                <Message variant='success'>تحویل داده شد <span>{order.deliveredAt}</span></Message>
                             ) : (
-                                <Message variant='warning'>Not Delivered</Message>
+                                <Message variant='warning'>تحویل داده نشده</Message>
                             )}
                         </ListGroup.Item>
 
 
                         <ListGroup.Item>
-                            <h2>Payment Method</h2>
+                            <h2>روش پرداخت</h2>
                             <p>
-                                <strong>Method :</strong>
+                                <strong>روش :</strong>
                                 {order.paymentMethod}
                             </p>
                             {order.isPaid ? (
-                                <Message variant='success'>Paid on {order.paidAt}</Message>
+                                <Message variant='success'>پرداخت شده {order.paidAt}</Message>
                             ) : (
-                                <Message variant='warning'>Not Paid</Message>
+                                <Message variant='warning'>پرداخت نشده</Message>
                             )}
                         </ListGroup.Item>
 
 
                         <ListGroup.Item>
-                            <h2>Order Items</h2>
+                            <h2>سفارش محصولات</h2>
 
                             {order.orderItems.length === 0 ?
                                 <Message variant='info'>Order is empty</Message>
@@ -99,16 +130,16 @@ export const OrderScreen = () => {
                                         {order.orderItems.map((item, index) => (
                                             <ListGroup.Item key={index}>
                                                 <Row>
-                                                    <Col md={1}>
+                                                    <Col md={2}>
                                                         <Image src={item.image} alt={item.name} fluid rounded />
                                                     </Col>
 
-                                                    <Col>
+                                                    <Col className="margin-top">
                                                         <Link to={`/product/${item.product}`}>{item.name}</Link>
                                                     </Col>
 
-                                                    <Col md={4}>
-                                                        {item.qty} X ${item.price} = ${(item.qty * item.price).toFixed(2)}
+                                                    <Col md={6} className="margin-top">
+                                                        {item.qty} عدد   {` ${separated(item.price)} تومان`} = {` ${separated(item.qty * item.price)} تومان`}
                                                     </Col>
                                                 </Row>
                                             </ListGroup.Item>
@@ -129,21 +160,26 @@ export const OrderScreen = () => {
                         <ListGroup variant="flush">
 
                             <ListGroup.Item>
-                                <h2>Order Summary</h2>
+                                <h2>صورتحساب سفارشات</h2>
                             </ListGroup.Item>
 
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>Item:</Col>
-                                    <Col>${order.itemsPrice}</Col>
+                                    <Col>هزینه محصولات:</Col>
+                                    <Col>
+                                    {` ${separated(order.itemsPrice)} تومان`}
+
+                                    </Col>
                                 </Row>
                             </ListGroup.Item>
 
 
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>Shipping:</Col>
-                                    <Col>${order.shippingPrice}</Col>
+                                    <Col>هزینه پست:</Col>
+                                    <Col>
+                                    {` ${separated(order.shippingPrice)} تومان`}
+                                    </Col>
                                 </Row>
                             </ListGroup.Item>
 
@@ -151,15 +187,19 @@ export const OrderScreen = () => {
 
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>Tax:</Col>
-                                    <Col>${order.taxPrice}</Col>
+                                    <Col>مالیات:</Col>
+                                    <Col>
+                                    {` ${separated(order.taxPrice)} تومان`}
+                                    </Col>
                                 </Row>
                             </ListGroup.Item>
 
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>Total:</Col>
-                                    <Col>${order.totalPrice}</Col>
+                                    <Col>جمع کل:</Col>
+                                    <Col>
+                                    {` ${separated(order.totalPrice)} تومان`}
+                                    </Col>
                                 </Row>
                             </ListGroup.Item>
 
@@ -173,14 +213,16 @@ export const OrderScreen = () => {
 
                         {loadingDeliver && <Loader />}
                         {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-                            <ListGroup.Item>
-                                <Button
-                                    type='button'
-                                    className='btn btn-block'
-                                    onClick={deliverHandler}
-                                >
-                                    Mark As Delivered
-                                </Button>
+                            <ListGroup.Item className="submit-delivered">
+                                <div>
+                                    <Button
+                                        type='button'
+                                        className='btn btn-block'
+                                        onClick={deliverHandler}
+                                    >
+                                        تایید ارسال شده
+                                    </Button>
+                                </div>
                             </ListGroup.Item>
                         )}
                     </Card>

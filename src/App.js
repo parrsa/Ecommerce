@@ -18,14 +18,16 @@ import ProductListScreen from './screens/ProductListScreen';
 import ProductScrenn from './screens/ProductDetils';
 import ProductEditScrenn from './screens/ProductEditScrenn';
 import OrderListScreen from './screens/OrderListScreen';
-function App() {
-  return (
-    <div>
-      <Header />
+import CreateProducts from './screens/CreateProduct'
+import './index.css';
 
+function App() {
+ 
+  return (
+    <div style={(true)?({"direction": "rtl"}):({"direction": "ltr"})}>
+      <Header />
       <main className='py-3'>
         <Container>
-
           <Routes>
             <Route path='/' element={<HomeScrenns />} />
             <Route path='/login' element={<LoginScreen />} />
@@ -39,13 +41,13 @@ function App() {
             <Route path='/cart/:id?' element={<CartScreen />} />
 
 
-
             <Route path='/admin/userlist' element={<UserListScreen />} />
             <Route path='/admin/user/:id/edit' element={<UserEditScrenn />} />
             <Route path='/admin/productlist' element={<ProductListScreen />} />
             <Route path='/admin/product/:id/edit' element={<ProductEditScrenn />} />
 
             <Route path='/admin/orderlist' element={<OrderListScreen />} />
+            <Route path='/admin/createproduct' element={<CreateProducts/>} />
 
 
           </Routes>

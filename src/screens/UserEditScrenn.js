@@ -55,11 +55,11 @@ const UserEditScrenn = () => {
     return (
         <div>
             <Link to='/admin/userlist'>
-                Go Back
+                برگشت
             </Link>
 
             <FormContainer>
-                <h1>Edit User</h1>
+                <h1>ویرایش کاربر</h1>
 
                 {loadingUpdate && < Loader />}
                 {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
@@ -69,20 +69,20 @@ const UserEditScrenn = () => {
                     <Form onSubmit={submitHandler}>
 
                         <Form.Group controlId='name'>
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control type='name' placeholder='Enter name' value={name} onChange={(e) => setName(e.target.value)} ></Form.Control>
+                            <Form.Label>نام</Form.Label>
+                            <Form.Control type='name' placeholder='نام را وارد کنید' value={name} onChange={(e) => setName(e.target.value)} ></Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='email'>
-                            <Form.Label>Email Address</Form.Label>
-                            <Form.Control type='email' placeholder='Enter Email' value={email} onChange={(e) => setEmail(e.target.value)} ></Form.Control>
+                            <Form.Label>ایمیل</Form.Label>
+                            <Form.Control type='email' placeholder='ایمیل را وارد کنید' value={email} onChange={(e) => setEmail(e.target.value)} ></Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='isadmin'>
-                            <Form.Check type='checkbox' label='Is Admin ' checked={isAdmin} onChange={(e) => setAdmin(e.target.checked)} ></Form.Check>
+                            <Form.Check type='checkbox' label='ادمین' checked={isAdmin} onChange={(e) => setAdmin(e.target.checked)} ></Form.Check>
                         </Form.Group>
 
-                        <Button type='submit' variant='primary'>Update</Button>
+                        <Button type='submit' variant='primary' className="update-user-button">ویرایش</Button>
 
                     </Form>
                 )}

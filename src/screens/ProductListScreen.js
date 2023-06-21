@@ -9,7 +9,7 @@ import { listProducts, deleteProduct, createProduct } from "../actions/productAc
 import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
 import Paginate from "../Components/Paginate";
 const ProductListScreen = () => {
-    const location=useLocation
+    const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -29,7 +29,7 @@ const ProductListScreen = () => {
     const { userInfo } = userLogin;
 
 
-    let keyword=location.search
+    let keyword = location.search
     useEffect(() => {
         dispatch({ type: PRODUCT_CREATE_RESET })
 
@@ -37,13 +37,12 @@ const ProductListScreen = () => {
             navigate('/login')
         }
 
-
         if (successCreate) {
             navigate(`/admin/product/${createdProduct._id}/edit`)
         } else {
             dispatch(listProducts(keyword))
         }
-    }, [dispatch, navigate, userInfo, successDelete, successCreate, createProduct,keyword])
+    }, [dispatch, navigate, userInfo, successDelete, successCreate, createProduct, keyword])
 
 
     const deleteHandler = (id) => {
@@ -56,14 +55,44 @@ const ProductListScreen = () => {
         dispatch(createProduct())
     }
 
+    const separated = (Number) => {
+        if (Number !== undefined) {
+            // return Number_sring;
+            const Number_sring = Number.toString();
+            let fraction = ''
+            if (Number_sring.split('.').length > 1) {
+                fraction = "/" + Number_sring.split('.')[1]
+            } 
+            else {
+            }
+            Number = Number_sring.split('.')[0]
+            const n = Number_sring.length;
+            let output = ''
+            Number = Number_sring.split('').reverse().join('')
+            for (let index = 1; index < n + 1; index++) {
+                let temp = Number.charAt(index - 1)
+                if (index % 3 === 0 && index !== n) {
+                    output = output + temp + ','
+                } else {
+                    output = output + temp
+                }
+            }
+            return output.split('').reverse().join('') + fraction;
+        } else {
+            return Number;
+        }
+    }
+
     return (
         <div>
             <Row className="align-items-end">
                 <Col>
-                    <h1>Products</h1>
+                    <h1>محصولات</h1>
                 </Col>
-                <Col className="text-right">
-                    <Button className="my-3" onClick={createProductHandler}> <i className="fas fa-plus"></i> Create Product</Button>
+                <Col className="text-right create-product">
+                    <div>
+                        <Button className="my-3 rounded" onClick={createProductHandler}> <i className="fas fa-plus"></i> ایجاد محصول</Button>
+                    </div>
                 </Col>
             </Row>
 
@@ -83,17 +112,17 @@ const ProductListScreen = () => {
 
                                 <thead>
                                     <th>ID</th>
-                                    <th>NAME</th>
-                                    <th>PRICE</th>
-                                    <th>CATEGORY</th>
-                                    <th>BRAND</th>
+                                    <th>نام</th>
+                                    <th>قیمت</th>
+                                    <th>دستبندی</th>
+                                    <th>برند</th>
                                 </thead>
                                 <tbody>
                                     {products.map(product => (
                                         <tr key={product._id}>
                                             <td>{product._id}</td>
                                             <td>{product.name}</td>
-                                            <td>${product.price}</td>
+                                            <td>   {` ${separated(product.price)} تومان`}</td>
                                             <td>{product.category}</td>
                                             <td>{product.brand}</td>
 

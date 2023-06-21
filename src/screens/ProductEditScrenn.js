@@ -58,16 +58,20 @@ const ProductEditScrenn = () => {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(updateProduct({
-            _id: params.id,
-            name,
-            price,
-            image,
-            brand,
-            category,
-            countInStock,
-            description
-        }))
+        if (!name || !price || !image || !brand || !category || !countInStock || !description) {
+            alert('no')
+        } else {
+            dispatch(updateProduct({
+                _id: params.id,
+                name,
+                price,
+                image,
+                brand,
+                category,
+                countInStock,
+                description
+            }))
+        }
     }
 
     const userLogin = useSelector(state => state.userLogin)
@@ -91,8 +95,6 @@ const ProductEditScrenn = () => {
             }
 
             const { data } = await axios.post('http://127.0.0.1:8000/api/products/upload/', formData, config)
-
-
             setImage(data)
             setUploading(false)
 
@@ -101,24 +103,31 @@ const ProductEditScrenn = () => {
         }
     }
 
+    const Back = () => {
+        if (!name || !price || !image || !brand || !category || !countInStock || !description) {
+            alert('no')
+        } else {
+            navigate('/admin/productlist')
+        }
+    }
+
     return (
         <div>
             <Link to='/admin/productlist'>
-                Go Back
+                برگشت
             </Link>
 
             <FormContainer>
-                <h1>Edit Prodcut</h1>
+                <h1>ویرایش محصول</h1>
                 {loadingUpdate && <Loader />}
                 {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
                 {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
-                    <Form onSubmit={submitHandler}>
+                    <Form >
                         <Form.Group controlId='name'>
-                            <Form.Label>Name</Form.Label>
+                            <Form.Label>نام</Form.Label>
                             <Form.Control
-
                                 type='name'
-                                placeholder='Enter name'
+                                placeholder='نام را وارد کنید'
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             >
@@ -126,11 +135,11 @@ const ProductEditScrenn = () => {
                         </Form.Group>
 
                         <Form.Group controlId='price'>
-                            <Form.Label>Price</Form.Label>
+                            <Form.Label>قیمت</Form.Label>
                             <Form.Control
 
                                 type='number'
-                                placeholder='Enter price'
+                                placeholder='قیمت را وارد کنید'
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
                             >
@@ -139,10 +148,10 @@ const ProductEditScrenn = () => {
 
 
                         <Form.Group controlId='image'>
-                            <Form.Label>Image</Form.Label>
+                            <Form.Label>عکس</Form.Label>
                             <Form.Control
                                 type='text'
-                                placeholder='Enter image'
+                                placeholder='عکس را وارد کنید'
                                 value={image}
                                 onChange={e => setImage(e.target.value)}
                             />
@@ -153,16 +162,6 @@ const ProductEditScrenn = () => {
                                 custom
                                 onChange={uploadFileHandler}
                                 type="file" />
-
-
-                            {/* <Form.File
-                                    id='image-file'
-                                    label='Choose File'
-                                    custom
-                                    onChange={uploadFileHandler}
-                                >
-                                </Form.File> */}
-
                             {uploading && <Loader />}
 
                         </Form.Group>
@@ -171,11 +170,11 @@ const ProductEditScrenn = () => {
 
 
                         <Form.Group controlId='brand'>
-                            <Form.Label>Brand</Form.Label>
+                            <Form.Label>برند</Form.Label>
                             <Form.Control
 
                                 type='text'
-                                placeholder='Enter brand'
+                                placeholder='برند را وارد کنید'
                                 value={brand}
                                 onChange={(e) => setBrand(e.target.value)}
                             >
@@ -183,11 +182,11 @@ const ProductEditScrenn = () => {
                         </Form.Group>
 
                         <Form.Group controlId='countinstock'>
-                            <Form.Label>Stock</Form.Label>
+                            <Form.Label>موجودی</Form.Label>
                             <Form.Control
 
                                 type='number'
-                                placeholder='Enter stock'
+                                placeholder='موجودی را وارد کنید'
                                 value={countInStock}
                                 onChange={(e) => setCountInStock(e.target.value)}
                             >
@@ -195,11 +194,11 @@ const ProductEditScrenn = () => {
                         </Form.Group>
 
                         <Form.Group controlId='category'>
-                            <Form.Label>Category</Form.Label>
+                            <Form.Label>دستبندی</Form.Label>
                             <Form.Control
 
                                 type='text'
-                                placeholder='Enter category'
+                                placeholder='دستبندی را وارد کنید'
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
                             >
@@ -207,11 +206,11 @@ const ProductEditScrenn = () => {
                         </Form.Group>
 
                         <Form.Group controlId='description'>
-                            <Form.Label>Description</Form.Label>
+                            <Form.Label>توضیحات</Form.Label>
                             <Form.Control
 
                                 type='text'
-                                placeholder='Enter description'
+                                placeholder='توضیحات را وارد کنید'
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                             >
@@ -219,8 +218,8 @@ const ProductEditScrenn = () => {
                         </Form.Group>
 
 
-                        <Button type='submit' variant='primary'>
-                            Update
+                        <Button onClick={submitHandler} className="update-product-button" type='submit' variant='primary'>
+                            ویرایش
                         </Button>
 
                     </Form>

@@ -32,7 +32,8 @@ export const PaymentScreen = () => {
             <CheckoutSteps step1 step2 step3 />
             <Form onSubmit={submitHandler}>
                 <Form.Group>
-                    <Form.Label as='legend'>Select Method</Form.Label>
+                    <Form.Label as='legend'>روش پرداخت</Form.Label>
+                    {/* <Form.Label as='legend'>Select Method</Form.Label> */}
                     <Col>
                         <Form.Check
                             type="radio"
@@ -47,8 +48,8 @@ export const PaymentScreen = () => {
                 </Form.Group>
 
                 
-                <Button type="submit" variant="primary">
-                    Countinue
+                <Button className="submit-payment rounded" type="submit" variant="primary">
+                    تایید
                 </Button>
             </Form>
         </FormContainer>
